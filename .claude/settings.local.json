@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -NoProfile -Command \"Get-Process python -ErrorAction SilentlyContinue | Select-Object Id,MainWindowTitle,StartTime | Format-Table\")",
+      "PowerShell(Get-Process python -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Process pythonw -ErrorAction SilentlyContinue)",
+      "Bash(python -c \"import ast; [ast.parse\\(open\\(f,encoding='utf-8'\\).read\\(\\), f\\) for f in ['database.py','daily_board_page.py','accounts_page.py','sticky_notes.py','main_window.py']]\")",
+      "Bash(python -c ' *)"
+    ]
+  }
+}

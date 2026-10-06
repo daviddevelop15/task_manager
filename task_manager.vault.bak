@@ -1,0 +1,14 @@
+{
+  "format": "TaskManagerVault",
+  "version": 1,
+  "mode": "password",
+  "verifier": "ZyISZ8JW3rRPTnpMvveoXSXBot4d/pVTJEY+k7I9HuJ0sHSKpqylQVwAPiB90WwNgIALbcgq",
+  "kdf": {
+    "name": "scrypt",
+    "salt": "atuGEhl+g1LEUnlqHNmXBA==",
+    "n": 65536,
+    "r": 8,
+    "p": 1
+  },
+  "wrapped_dek": "VivG1fXD00s80qoIFX3rUvS/Bjq4utNg5HnzMWSFhpNktwjDlfIS6iGS6luSNFvzNIGVcQ49yp25bR8b"
+}

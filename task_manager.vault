@@ -1,0 +1,24 @@
+{
+  "format": "TaskManagerVault",
+  "version": 1,
+  "mode": "password",
+  "verifier": "ZyISZ8JW3rRPTnpMvveoXSXBot4d/pVTJEY+k7I9HuJ0sHSKpqylQVwAPiB90WwNgIALbcgq",
+  "kdf": {
+    "name": "scrypt",
+    "salt": "atuGEhl+g1LEUnlqHNmXBA==",
+    "n": 65536,
+    "r": 8,
+    "p": 1
+  },
+  "wrapped_dek": "VivG1fXD00s80qoIFX3rUvS/Bjq4utNg5HnzMWSFhpNktwjDlfIS6iGS6luSNFvzNIGVcQ49yp25bR8b",
+  "recovery": {
+    "kdf": {
+      "name": "scrypt",
+      "salt": "LnmAER5Ld4AgSinoMMbUjw==",
+      "n": 65536,
+      "r": 8,
+      "p": 1
+    },
+    "wrapped_dek": "i9dm73diKdWU+lnA6fWIy46Su1UHgmXKqdZWbmXOkf1cUYT9XDNq6ywcEo0X11d5+WE57DWBvVdxGmH+"
+  }
+}

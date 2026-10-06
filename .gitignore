@@ -1,0 +1,55 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# PyInstaller
+build/
+dist/
+*.manifest
+
+# Local SQLite database (see database.py)
+task_manager.db
+task_manager_acc.key
+
+# Build-time database backups (see build.ps1)
+db_backups/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Test / type / lint caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Local analyzer credentials (never commit)
+doc/.env.var
+.env.var
+
+# Development build output (kept separate from the live app)
+dist-dev/
+
+# PyInstaller regenerates a .spec per build name; the variant ones are pure
+# artifacts (TaskManager.spec predates this and stays tracked).
+TaskManager_PM.spec
+TaskManager_Dev.spec

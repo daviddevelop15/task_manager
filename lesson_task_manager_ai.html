@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson: The Task Manager App &amp; Its AI Technology</title>
+<style>
+  :root{
+    --bg:#0f1220; --panel:#171a2e; --panel2:#1e2340; --ink:#e8eaf6; --muted:#9aa0c3;
+    --accent:#7c9cff; --accent2:#4be3c0; --warn:#ffcf6b; --danger:#ff7a90;
+    --code:#0b0e1a; --line:#2b3157; --ok:#57e39a;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;
+    background:linear-gradient(180deg,#0b0e1a,#0f1220 40%); color:var(--ink);
+    line-height:1.6; font-size:16px;
+  }
+  header.hero{
+    padding:48px 24px 36px; text-align:center;
+    background:radial-gradient(1200px 400px at 50% -80px,rgba(124,156,255,.28),transparent);
+    border-bottom:1px solid var(--line);
+  }
+  .hero h1{margin:0 0 10px; font-size:2.1rem; letter-spacing:.3px}
+  .hero p{margin:6px auto; max-width:760px; color:var(--muted)}
+  .badges{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:18px}
+  .badge{background:var(--panel2); border:1px solid var(--line); color:var(--ink);
+    padding:5px 12px; border-radius:999px; font-size:.82rem}
+  .wrap{max-width:960px; margin:0 auto; padding:24px}
+  nav.toc{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 22px; margin:24px 0;
+  }
+  nav.toc h2{margin:0 0 10px; font-size:1rem; color:var(--accent2); text-transform:uppercase; letter-spacing:1px}
+  nav.toc ol{margin:0; padding-left:20px; columns:2; column-gap:32px}
+  nav.toc a{color:var(--ink); text-decoration:none}
+  nav.toc a:hover{color:var(--accent); text-decoration:underline}
+  nav.toc li{margin:4px 0; break-inside:avoid}
+  .time{color:var(--muted); font-size:.82rem}
+  section{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:26px 28px; margin:20px 0;
+  }
+  section h2{margin:0 0 4px; font-size:1.5rem; display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
+  section h2 .num{color:var(--accent); font-variant-numeric:tabular-nums}
+  section h2 .clock{margin-left:auto; font-size:.8rem; color:var(--muted); font-weight:400}
+  section h3{color:var(--accent2); margin:22px 0 6px; font-size:1.1rem}
+  section h4{color:var(--warn); margin:16px 0 4px; font-size:.98rem}
+  p{margin:10px 0}
+  ul,ol{margin:10px 0; padding-left:22px}
+  li{margin:5px 0}
+  code{background:var(--code); border:1px solid var(--line); padding:1px 6px; border-radius:6px;
+    font-family:"Cascadia Code",Consolas,monospace; font-size:.86em; color:#c8d3ff}
+  pre{background:var(--code); border:1px solid var(--line); border-radius:10px; padding:16px;
+    overflow:auto; font-family:"Cascadia Code",Consolas,monospace; font-size:.84rem; line-height:1.5}
+  pre code{background:none; border:none; padding:0; color:#d6def7}
+  .kw{color:#ff9ecb} .str{color:#a5e6a0} .cmt{color:#6b7299; font-style:italic} .fn{color:#8fd0ff} .num2{color:#ffcf6b}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:16px 0}
+  .card{background:var(--panel2); border:1px solid var(--line); border-radius:12px; padding:16px}
+  .card h4{margin:0 0 6px; color:var(--accent)}
+  .card p{margin:0; color:var(--muted); font-size:.9rem}
+  .callout{border-left:4px solid var(--accent); background:var(--panel2); padding:14px 18px;
+    border-radius:0 10px 10px 0; margin:16px 0}
+  .callout.warn{border-color:var(--warn)}
+  .callout.key{border-color:var(--accent2)}
+  .callout strong{color:var(--ink)}
+  .flow{display:flex; flex-wrap:wrap; align-items:center; gap:10px; justify-content:center; margin:18px 0}
+  .flow .step{background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:.86rem; text-align:center}
+  .flow .arrow{color:var(--accent); font-size:1.3rem}
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:.9rem}
+  th,td{border:1px solid var(--line); padding:9px 12px; text-align:left; vertical-align:top}
+  th{background:var(--panel2); color:var(--accent2)}
+  .tag{display:inline-block; font-size:.72rem; padding:2px 8px; border-radius:6px; background:var(--panel2); border:1px solid var(--line); color:var(--muted)}
+  .speaker{background:linear-gradient(180deg,#151a33,#12162b); border:1px dashed var(--accent); border-radius:10px; padding:12px 16px; margin:14px 0; font-size:.9rem}
+  .speaker::before{content:"🎤 Talking point"; display:block; color:var(--accent); font-size:.75rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px}
+  footer{text-align:center; color:var(--muted); padding:30px; font-size:.85rem}
+  .qbox{background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:14px 18px; margin:10px 0}
+  .qbox summary{cursor:pointer; color:var(--accent2); font-weight:600}
+  .qbox[open] summary{margin-bottom:8px}
+  hr.soft{border:none; border-top:1px solid var(--line); margin:22px 0}
+  @media(max-width:640px){ nav.toc ol{columns:1} .hero h1{font-size:1.6rem} section{padding:20px 16px} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Inside the Task Manager App &amp; Its AI Engine</h1>
+  <p>A 10&ndash;15 minute technical lesson: how a real PyQt6 desktop app is built, how it protects your data,
+     and how it uses Large Language Models (Claude &amp; GPT) to help you land a job.</p>
+  <div class="badges">
+    <span class="badge">🐍 Python + PyQt6</span>
+    <span class="badge">🗄️ Encrypted SQLite</span>
+    <span class="badge">🤖 Claude / OpenAI</span>
+    <span class="badge">🧵 Threaded UI</span>
+    <span class="badge">⏱️ ~13 min</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<nav class="toc">
+  <h2>Lesson Plan</h2>
+  <ol>
+    <li><a href="#s1">What is this app?</a> <span class="time">(1 min)</span></li>
+    <li><a href="#s2">Architecture &amp; tech stack</a> <span class="time">(2 min)</span></li>
+    <li><a href="#s3">Data security: encryption</a> <span class="time">(2 min)</span></li>
+    <li><a href="#s4">The AI feature in action</a> <span class="time">(2 min)</span></li>
+    <li><a href="#s5">How the AI actually works</a> <span class="time">(3 min)</span></li>
+    <li><a href="#s6">Prompt engineering &amp; structured output</a> <span class="time">(2 min)</span></li>
+    <li><a href="#s7">Keeping the UI responsive (threads)</a> <span class="time">(1 min)</span></li>
+    <li><a href="#s8">Key takeaways &amp; discussion</a> <span class="time">(1 min)</span></li>
+  </ol>
+</nav>
+
+<!-- ===================== 1 ===================== -->
+<section id="s1">
+  <h2><span class="num">1.</span> What is this app? <span class="clock">~1 min</span></h2>
+  <p>The <strong>Task Manager</strong> is a Windows <strong>desktop application</strong> for tracking work &mdash;
+     especially a <em>job-application workflow</em>. It is organised into five tabs:</p>
+  <div class="grid">
+    <div class="card"><h4>Tasks</h4><p>Track links/URLs with a status workflow and multiline notes.</p></div>
+    <div class="card"><h4>Daily</h4><p>An Excel-style multi-sheet grid of daily cards &mdash; where the AI lives.</p></div>
+    <div class="card"><h4>Meetings</h4><p>A month-grid calendar with repeating alarms &amp; pop-ups.</p></div>
+    <div class="card"><h4>Sticky notes</h4><p>Free-form quick notes.</p></div>
+    <div class="card"><h4>Acc</h4><p>Encrypted account/password store.</p></div>
+  </div>
+  <div class="speaker">Open the app and click through the five tabs. Point out that everything is stored locally
+    on the machine &mdash; there is no server. This one design choice drives both the security work and the
+    threading work we'll see later.</div>
+</section>
+
+<!-- ===================== 2 ===================== -->
+<section id="s2">
+  <h2><span class="num">2.</span> Architecture &amp; tech stack <span class="clock">~2 min</span></h2>
+  <p>The whole app is built from a handful of well-known, dependable technologies. Only <strong>three</strong>
+     external packages are required:</p>
+  <pre><code><span class="cmt"># requirements.txt</span>
+PyQt6&gt;=6.6.0        <span class="cmt"># the GUI framework (windows, tables, dialogs)</span>
+cryptography&gt;=42    <span class="cmt"># AES-256-GCM, scrypt &mdash; the encryption primitives</span>
+anthropic&gt;=0.69     <span class="cmt"># official Claude SDK (OpenAI uses no extra package)</span></code></pre>
+
+  <h3>Separation of concerns (one job per file)</h3>
+  <table>
+    <tr><th>Module</th><th>Responsibility</th></tr>
+    <tr><td><code>main.py</code></td><td>Startup, unlock the encrypted database, launch the window.</td></tr>
+    <tr><td><code>main_window.py</code></td><td>The 5-tab shell &amp; app settings dialog.</td></tr>
+    <tr><td><code>database.py</code></td><td>SQLite schema + all reads/writes (the data layer).</td></tr>
+    <tr><td><code>secure_store.py</code> / <code>win_dpapi.py</code></td><td>The encryption engine.</td></tr>
+    <tr><td><code>ai_assistant.py</code></td><td><strong>The AI brain</strong> &mdash; talks to Claude / OpenAI.</td></tr>
+    <tr><td><code>daily_sheet_page.py</code></td><td>The Daily grid UI that <em>calls</em> the AI brain.</td></tr>
+  </table>
+  <div class="callout key"><strong>Teaching point &mdash; layering:</strong> the UI never talks to Claude directly.
+    The screen (<code>daily_sheet_page.py</code>) calls a plain Python function in <code>ai_assistant.py</code>,
+    which is the <em>only</em> file that knows about AI providers. Swap the AI vendor and the UI never changes.
+    This is the <strong>single-responsibility principle</strong> in the wild.</div>
+</section>
+
+<!-- ===================== 3 ===================== -->
+<section id="s3">
+  <h2><span class="num">3.</span> Data security: encryption at rest <span class="clock">~2 min</span></h2>
+  <p>Because the data (job details, passwords, résumés) lives in a local file, the app encrypts it.
+     The design is called <strong>envelope encryption</strong>:</p>
+
+  <div class="flow">
+    <div class="step">Your password<br>or Windows login</div>
+    <div class="arrow">→</div>
+    <div class="step">unwraps a<br><strong>Key-Encryption-Key</strong></div>
+    <div class="arrow">→</div>
+    <div class="step">which unwraps the<br><strong>Data-Encryption-Key</strong> (DEK)</div>
+    <div class="arrow">→</div>
+    <div class="step">which decrypts the<br><strong>whole database</strong></div>
+  </div>
+
+  <ul>
+    <li><strong>One random 32-byte key (the DEK)</strong> encrypts all data with <code>AES-256-GCM</code>.</li>
+    <li>That key is "wrapped" (locked in an envelope) two interchangeable ways:
+      <ul>
+        <li><span class="tag">DPAPI mode</span> no password &mdash; Windows unlocks it silently for your user account.</li>
+        <li><span class="tag">Password mode</span> a password you type is stretched with <code>scrypt</code> into the wrapping key.</li>
+      </ul>
+    </li>
+    <li>Changing your password only <em>re-wraps the envelope</em> &mdash; the huge database is never re-encrypted. Fast and safe.</li>
+    <li>Plaintext data only ever exists <strong>in RAM</strong> (an in-memory SQLite database). Changes are flushed
+        to the encrypted file with a <strong>0.8-second debounce</strong> so a burst of edits becomes a single write.</li>
+  </ul>
+  <div class="callout warn"><strong>Engineering trade-off worth teaching:</strong> the debounced flush means a hard
+    crash could lose up to ~0.8&nbsp;s of edits &mdash; accepted deliberately because the old "save on every edit"
+    approach re-encrypted the entire file dozens of times during a single drag-and-drop and made the app feel slow.
+    <em>Good engineering is choosing which trade-off to make, on purpose.</em></div>
+</section>
+
+<!-- ===================== 4 ===================== -->
+<section id="s4">
+  <h2><span class="num">4.</span> The AI feature in action <span class="clock">~2 min</span></h2>
+  <p>On a <strong>Daily card</strong> (representing one job you're applying to) the AI assistant offers four things,
+     all grounded in <em>your résumé</em> and the <em>job description</em>:</p>
+  <div class="grid">
+    <div class="card"><h4>📊 Match score</h4><p>A 0&ndash;100 fit score with concrete strengths and gaps.</p></div>
+    <div class="card"><h4>✍️ Answer a question</h4><p>Drafts a first-person answer to an application question.</p></div>
+    <div class="card"><h4>📄 Cover letter</h4><p>A tailored 3&ndash;4 paragraph letter.</p></div>
+    <div class="card"><h4>🔎 Parse a posting</h4><p>Pastes raw job text → clean Company/Role/Location/URL fields.</p></div>
+  </div>
+  <p>Your résumé is stored (encrypted) in the app &mdash; even as a <strong>PDF</strong>. When you upload a PDF,
+     it's sent to Claude directly as a document, no manual copy-paste needed.</p>
+  <div class="speaker">If a demo is possible: paste a job description into a card, pick a résumé, click
+    "Check match score", and show the score + strengths/gaps appearing. This is the "wow" moment &mdash;
+    then the next section explains what happened behind that click.</div>
+</section>
+
+<!-- ===================== 5 ===================== -->
+<section id="s5">
+  <h2><span class="num">5.</span> How the AI actually works <span class="clock">~3 min</span></h2>
+  <p>This is the heart of the lesson. An <strong>LLM (Large Language Model)</strong> like Claude or GPT is a
+     text-in / text-out engine. The app's job is to (1) build a good prompt, (2) send it over the internet to
+     the model, and (3) parse what comes back.</p>
+
+  <h3>Provider-switchable design</h3>
+  <p>A setting chooses the vendor. Both paths converge on one internal function, <code>_complete(...)</code>:</p>
+  <div class="flow">
+    <div class="step">UI click</div>
+    <div class="arrow">→</div>
+    <div class="step"><code>match_score()</code></div>
+    <div class="arrow">→</div>
+    <div class="step"><code>_complete()</code><br>picks provider</div>
+    <div class="arrow">→</div>
+    <div class="step">Anthropic SDK<br><span class="tag">claude-opus-4-8</span></div>
+    <div class="step">or OpenAI REST<br><span class="tag">gpt-4o</span></div>
+  </div>
+
+  <pre><code><span class="cmt"># ai_assistant.py &mdash; one function, two back ends</span>
+<span class="kw">def</span> <span class="fn">_complete</span>(system, max_tokens, tail_text, resume_text=<span class="kw">None</span>, resume_pdf=<span class="kw">None</span>):
+    <span class="kw">if</span> ai_provider() == <span class="str">"openai"</span>:
+        <span class="cmt"># Chat Completions over stdlib HTTP &mdash; no extra dependency</span>
+        <span class="kw">return</span> _openai_complete(system, user_text, max_tokens)
+    <span class="cmt"># Anthropic: build "content blocks" (text, or a PDF document block)</span>
+    content = _resume_blocks(resume_text, resume_pdf)
+    content.append({<span class="str">"type"</span>: <span class="str">"text"</span>, <span class="str">"text"</span>: tail_text})
+    <span class="kw">return</span> _anthropic_complete(system, content, max_tokens)</code></pre>
+
+  <h3>The two building blocks of every LLM call</h3>
+  <table>
+    <tr><th>Part</th><th>What it is</th><th>Example in this app</th></tr>
+    <tr><td><strong>System prompt</strong></td><td>Fixed instructions that set the model's <em>role &amp; rules</em>.</td><td>"You are an expert technical recruiter… respond with ONLY a JSON object…"</td></tr>
+    <tr><td><strong>User message</strong></td><td>The actual data for <em>this</em> request.</td><td>The résumé (as text or PDF) + the job description.</td></tr>
+  </table>
+
+  <h3>Sending a PDF to Claude (content blocks)</h3>
+  <p>Instead of one string, Claude accepts a <em>list of typed blocks</em>. A PDF is base64-encoded into a
+     <code>document</code> block &mdash; the model reads the PDF itself:</p>
+  <pre><code>[
+  {<span class="str">"type"</span>: <span class="str">"text"</span>, <span class="str">"text"</span>: <span class="str">"=== CANDIDATE RESUME (attached PDF) ==="</span>},
+  {<span class="str">"type"</span>: <span class="str">"document"</span>,
+   <span class="str">"source"</span>: {<span class="str">"type"</span>: <span class="str">"base64"</span>,
+              <span class="str">"media_type"</span>: <span class="str">"application/pdf"</span>,
+              <span class="str">"data"</span>: <span class="str">"&lt;base64 of the PDF&gt;"</span>}}
+]</code></pre>
+  <div class="callout"><strong>Vendor difference to note:</strong> OpenAI's chat endpoint here takes plain text, so the
+    app <em>extracts</em> the PDF's text first. Same feature, two implementations &mdash; hidden behind the same function.</div>
+</section>
+
+<!-- ===================== 6 ===================== -->
+<section id="s6">
+  <h2><span class="num">6.</span> Prompt engineering &amp; structured output <span class="clock">~2 min</span></h2>
+  <p>An LLM naturally replies in prose. But software needs <strong>predictable data</strong>. The trick is to
+     <em>ask for JSON</em> in the system prompt, then parse it. This is the match-score prompt:</p>
+  <pre><code><span class="str">"You are an expert technical recruiter and career coach. Assess how</span>
+<span class="str"> well the candidate's resume matches the job description... Respond</span>
+<span class="str"> with ONLY a JSON object (no markdown, no prose) of the form:</span>
+<span class="str"> {\"score\": &lt;0-100&gt;, \"summary\": \"...\",</span>
+<span class="str">  \"strengths\": [\"...\"], \"gaps\": [\"...\"]}"</span></code></pre>
+
+  <p>The reply is then turned into a real Python object &mdash; <strong>defensively</strong>, because models
+     sometimes wrap JSON in extra text:</p>
+  <pre><code><span class="kw">def</span> <span class="fn">_extract_json</span>(text):
+    <span class="kw">try</span>:
+        <span class="kw">return</span> json.loads(text)          <span class="cmt"># happy path</span>
+    <span class="kw">except</span> ValueError:
+        <span class="kw">pass</span>
+    m = re.search(<span class="str">r"\{.*\}"</span>, text, re.DOTALL)  <span class="cmt"># find first {...} block</span>
+    <span class="kw">if</span> m: <span class="kw">return</span> json.loads(m.group(<span class="num2">0</span>))
+    <span class="kw">raise</span> ValueError(<span class="str">"The model did not return a parseable result."</span>)</code></pre>
+
+  <h4>Guard-rails baked into the prompts</h4>
+  <ul>
+    <li><strong>No hallucination:</strong> "Do not invent facts, employers, or credentials not in the resume."</li>
+    <li><strong>Clean output:</strong> "Use only plain ASCII punctuation" &mdash; then a <code>normalize_punctuation()</code>
+        pass still swaps any smart-quotes/em-dashes for keyboard characters (belt <em>and</em> braces).</li>
+    <li><strong>Language &amp; length control:</strong> answers can be forced into English, Spanish, both, or a character limit.</li>
+    <li><strong>Input trimming:</strong> résumé/job text is clipped to ~24k characters so prompts stay within the model's context window and costs stay bounded.</li>
+  </ul>
+  <div class="callout key"><strong>Big idea:</strong> "AI in an app" is 20% calling the model and 80% <em>engineering around</em>
+    it &mdash; prompting precisely, constraining output, validating results, and handling every way it can go wrong.</div>
+</section>
+
+<!-- ===================== 7 ===================== -->
+<section id="s7">
+  <h2><span class="num">7.</span> Keeping the UI responsive: threads <span class="clock">~1 min</span></h2>
+  <p>An AI call takes several seconds. If it ran on the main thread, the whole window would <strong>freeze</strong>.
+     The app runs it on a background <strong>worker thread</strong> and reports back with a signal:</p>
+  <pre><code><span class="kw">class</span> <span class="fn">AIWorker</span>(QObject):
+    finished = pyqtSignal(<span class="kw">object</span>, <span class="kw">str</span>)   <span class="cmt"># (result, error_message)</span>
+
+    <span class="kw">def</span> <span class="fn">run</span>(self):
+        <span class="kw">try</span>:
+            result = self._fn()               <span class="cmt"># the AI call, off the UI thread</span>
+            self.finished.emit(result, <span class="str">""</span>)
+        <span class="kw">except</span> Exception <span class="kw">as</span> exc:
+            self.finished.emit(<span class="kw">None</span>, format_error(exc))  <span class="cmt"># friendly message</span></code></pre>
+  <div class="flow">
+    <div class="step">Click "Match"<br><span class="tag">UI thread</span></div>
+    <div class="arrow">→</div>
+    <div class="step">spawn QThread<br>show "Working…"</div>
+    <div class="arrow">→</div>
+    <div class="step">call Claude<br><span class="tag">worker thread</span></div>
+    <div class="arrow">→</div>
+    <div class="step"><code>finished</code> signal<br>updates the screen</div>
+  </div>
+  <p>Errors are translated into plain English (<code>format_error</code>): a bad key → "Invalid API key. Check it
+     in Settings", a rate-limit → "Try again shortly." The user never sees a raw stack trace.</p>
+</section>
+
+<!-- ===================== 8 ===================== -->
+<section id="s8">
+  <h2><span class="num">8.</span> Key takeaways &amp; discussion <span class="clock">~1 min</span></h2>
+  <div class="grid">
+    <div class="card"><h4>Layer your code</h4><p>UI, data, and AI are separate files. Each can change without breaking the others.</p></div>
+    <div class="card"><h4>Security is a design, not a bolt-on</h4><p>Envelope encryption + in-RAM plaintext + debounced writes.</p></div>
+    <div class="card"><h4>LLMs are text engines</h4><p>System prompt (rules) + user message (data) → text back.</p></div>
+    <div class="card"><h4>Constrain the AI</h4><p>Demand JSON, forbid hallucination, validate everything it returns.</p></div>
+    <div class="card"><h4>Never freeze the UI</h4><p>Long network calls belong on a worker thread.</p></div>
+    <div class="card"><h4>Design for failure</h4><p>Every API error becomes a clear, human message.</p></div>
+  </div>
+
+  <hr class="soft">
+  <h3>Discussion questions for the class</h3>
+  <details class="qbox"><summary>Why does the app send a résumé + job description on every request instead of "training" the model on your data?</summary>
+    <p>Because these hosted LLMs are <em>pre-trained</em> and used via <em>prompting</em> (in-context learning), not fine-tuning.
+       You supply the relevant facts each call. It's cheaper, instant, private per-request, and keeps the model general.</p></details>
+  <details class="qbox"><summary>What could go wrong if we trusted the model to always return valid JSON?</summary>
+    <p>It might wrap JSON in prose, add markdown fences, or miss a field. That would crash a naive <code>json.loads</code>.
+       Hence the defensive <code>_extract_json</code> regex fallback and the clamping of <code>score</code> to 0&ndash;100.</p></details>
+  <details class="qbox"><summary>Why encrypt in memory and flush after 0.8s rather than saving on every keystroke?</summary>
+    <p>Re-encrypting the entire file on every edit was slow. Debouncing coalesces a burst of edits into one write.
+       The cost is losing at most ~0.8s of work in a hard crash &mdash; an accepted, documented trade-off.</p></details>
+  <details class="qbox"><summary>How does the "provider-switchable" design help the business?</summary>
+    <p>No vendor lock-in: if one provider is down, too expensive, or a better model appears, you flip a setting.
+       The UI and features are untouched because everything funnels through <code>_complete()</code>.</p></details>
+</section>
+
+<footer>
+  Task Manager &mdash; teaching edition &bull; PyQt6 &middot; SQLite &middot; AES-256-GCM &middot; Claude / OpenAI<br>
+  Built as a lesson resource. Open in any browser; no internet required to view.
+</footer>
+
+</div>
+</body>
+</html>
